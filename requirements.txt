@@ -1,0 +1,26 @@
+# Core
+streamlit
+python-dotenv
+
+# LangChain
+langchain
+langchain-community
+langchain-core
+langchain-pinecone
+langchain-huggingface
+
+# YouTube Transcript
+youtube-transcript-api
+pytube
+
+# Embeddings
+sentence-transformers
+
+# Vector Store
+pinecone
+
+# LLM via OpenRouter
+openai
+
+# Utilities
+tiktoken
