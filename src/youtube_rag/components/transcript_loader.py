@@ -38,7 +38,7 @@ class TranscriptLoader:
         except Exception:
             return f"YouTube Video ({video_id})"
 
-    def load_transcript(self, url: str) -> list[Document]:
+    def load_transcript(self, url: str):
         """
         Loads transcript from a YouTube URL and returns
         a list of LangChain Documents with metadata.
@@ -47,7 +47,16 @@ class TranscriptLoader:
         title = self.get_video_title(video_id)
 
         try:
-            transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
+            ytt_api = YouTubeTranscriptApi()
+            fetched = ytt_api.fetch(video_id)
+            transcript_list = [
+                {
+                    "text": s.text,
+                    "start": s.start,
+                    "duration": s.duration
+                }
+                for s in fetched
+            ]
         except TranscriptsDisabled:
             raise ValueError("Transcripts are disabled for this video.")
         except NoTranscriptFound:

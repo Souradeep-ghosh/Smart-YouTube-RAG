@@ -23,9 +23,8 @@ class TextProcessor:
         if not documents:
             raise ValueError("No documents to process.")
 
-        # Merge all text with timestamps preserved in metadata
         full_text = " ".join([doc.page_content for doc in documents])
-        metadata = documents[0].metadata  # carry over video metadata
+        metadata = documents[0].metadata
 
         return [Document(page_content=full_text, metadata=metadata)]
 
@@ -37,7 +36,12 @@ class TextProcessor:
         merged = self.merge_transcript_segments(documents)
         chunks = self.splitter.split_documents(merged)
 
-        # Add chunk index to metadata for traceability
         for i, chunk in enumerate(chunks):
             chunk.metadata["chunk_index"] = i
             chunk.metadata["total_chunks"] = len(chunks)
+
+        return chunks
+
+    def get_full_transcript_text(self, documents: list[Document]) -> str:
+        """Returns the full transcript as a single plain text string."""
+        return " ".join([doc.page_content for doc in documents])
