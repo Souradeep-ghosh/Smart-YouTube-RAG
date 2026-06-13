@@ -1,4 +1,4 @@
-from langchain_pinecone import PineconeVectorStore
+from langchain_pinecone.vectorstores import PineconeVectorStore
 from langchain_core.documents import Document
 from pinecone import Pinecone
 from src.youtube_rag.config.settings import settings
