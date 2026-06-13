@@ -42,27 +42,63 @@ class TranscriptLoader:
         """
         Loads transcript from a YouTube URL and returns
         a list of LangChain Documents with metadata.
+        Automatically detects available languages and falls back gracefully.
         """
         video_id = self.extract_video_id(url)
         title = self.get_video_title(video_id)
 
+        transcript_list = None
+
         try:
             ytt_api = YouTubeTranscriptApi()
-            fetched = ytt_api.fetch(video_id)
-            transcript_list = [
-                {
-                    "text": s.text,
-                    "start": s.start,
-                    "duration": s.duration
-                }
-                for s in fetched
-            ]
+            
+            # Try to get transcript — first try default/English, then all available
+            try:
+                fetched = ytt_api.fetch(video_id)
+                transcript_list = [
+                    {
+                        "text": s.text,
+                        "start": s.start,
+                        "duration": s.duration
+                    }
+                    for s in fetched
+                ]
+            except NoTranscriptFound:
+                # If no default transcript, get list of all available languages
+                try:
+                    transcript_dict = ytt_api.list_transcripts(video_id)
+                    
+                    # Priority: manually created > auto-generated > any language
+                    available_transcripts = transcript_dict.get_transcripts()
+                    manually_created = [t for t in available_transcripts if t.is_manually_created]
+                    
+                    if manually_created:
+                        fetched = manually_created[0].fetch()
+                    elif available_transcripts:
+                        fetched = available_transcripts[0].fetch()
+                    else:
+                        raise Exception("No transcripts in any language")
+                    
+                    transcript_list = [
+                        {
+                            "text": s.text,
+                            "start": s.start,
+                            "duration": s.duration
+                        }
+                        for s in fetched
+                    ]
+                except Exception as lang_error:
+                    raise Exception(f"No transcript found in any language: {str(lang_error)}")
+            
         except TranscriptsDisabled:
             raise ValueError("Transcripts are disabled for this video.")
-        except NoTranscriptFound:
-            raise ValueError("No transcript found for this video.")
         except Exception as e:
-            raise ValueError(f"Error fetching transcript: {e}")
+            if "No transcript found" in str(e) or transcript_list is None:
+                raise ValueError("No transcript found for this video in any language.")
+            raise ValueError(f"Error fetching transcript: {str(e)}")
+
+        if not transcript_list:
+            raise ValueError("No transcript data retrieved.")
 
         # Convert each transcript segment into a LangChain Document
         documents = []
