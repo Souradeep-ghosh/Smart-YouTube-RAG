@@ -1,0 +1,15 @@
+streamlit
+python-dotenv
+langchain
+langchain-core
+langchain-openai
+langchain-community
+langchain-huggingface
+langchain-text-splitters
+langchain-pinecone
+youtube-transcript-api
+pytube
+sentence-transformers
+pinecone
+openai
+tiktoken
