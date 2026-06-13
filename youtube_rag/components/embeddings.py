@@ -1,5 +1,5 @@
 from langchain_huggingface import HuggingFaceEmbeddings
-from src.youtube_rag.config.settings import settings
+from youtube_rag.config.settings import settings
 
 
 class EmbeddingModel:

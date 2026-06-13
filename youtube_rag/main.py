@@ -1,11 +1,11 @@
 import streamlit as st
-from src.youtube_rag.ui.streamlit_ui import StreamlitUI
-from src.youtube_rag.ui.display_result import DisplayResult
-from src.youtube_rag.components.transcript_loader import TranscriptLoader
-from src.youtube_rag.components.text_processor import TextProcessor
-from src.youtube_rag.components.vector_store import VectorStore
-from src.youtube_rag.components.llm import LLMModel
-from src.youtube_rag.components.rag_chain import RAGChain
+from youtube_rag.ui.streamlit_ui import StreamlitUI
+from youtube_rag.ui.display_result import DisplayResult
+from youtube_rag.components.transcript_loader import TranscriptLoader
+from youtube_rag.components.text_processor import TextProcessor
+from youtube_rag.components.vector_store import VectorStore
+from youtube_rag.components.llm import LLMModel
+from youtube_rag.components.rag_chain import RAGChain
 
 
 def load_app():

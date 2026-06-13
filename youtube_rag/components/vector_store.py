@@ -1,8 +1,8 @@
 from langchain_pinecone.vectorstores import PineconeVectorStore
 from langchain_core.documents import Document
 from pinecone import Pinecone
-from src.youtube_rag.config.settings import settings
-from src.youtube_rag.components.embeddings import EmbeddingModel
+from youtube_rag.config.settings import settings
+from youtube_rag.components.embeddings import EmbeddingModel
 
 
 class VectorStore:

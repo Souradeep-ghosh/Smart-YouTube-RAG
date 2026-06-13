@@ -1,5 +1,5 @@
 from langchain_openai import ChatOpenAI
-from src.youtube_rag.config.settings import settings
+from youtube_rag.config.settings import settings
 
 
 class LLMModel:

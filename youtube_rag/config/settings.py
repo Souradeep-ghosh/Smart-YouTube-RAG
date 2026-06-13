@@ -4,14 +4,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
 def get_secret(key: str, default: str = ""):
     """Get secret from Streamlit Cloud (st.secrets) or local .env file."""
     try:
-        # Try Streamlit secrets first (works on Cloud)
         return st.secrets.get(key, os.getenv(key, default))
     except:
-        # Fall back to .env (local development)
         return os.getenv(key, default)
 
 
