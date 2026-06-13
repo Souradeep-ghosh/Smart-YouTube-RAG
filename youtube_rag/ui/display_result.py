@@ -86,3 +86,5 @@ class DisplayResult:
             if st.button("🗑️ Clear Chat History"):
                 st.session_state.chat_history = []
                 st.rerun()
+                
+                

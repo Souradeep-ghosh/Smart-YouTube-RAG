@@ -64,7 +64,7 @@ def load_app():
 
             # Step 3: Index into Pinecone
             with st.spinner("📌 Indexing into Pinecone vector store..."):
-                from src.youtube_rag.config.settings import settings
+                from youtube_rag.config.settings import settings
                 settings.PINECONE_API_KEY = pinecone_key
                 vector_store = VectorStore()
 
@@ -79,7 +79,8 @@ def load_app():
             ui.render_video_info(title, video_id, len(chunks))
 
         except Exception as e:
-            display.display_error(f"Failed to process video: {str(e)}")
+            import traceback
+            display.display_error(f"Failed to process video: {str(e)}\n\n{traceback.format_exc()}")
             return
 
     # ── Main Tabs ─────────────────────────────────────────
