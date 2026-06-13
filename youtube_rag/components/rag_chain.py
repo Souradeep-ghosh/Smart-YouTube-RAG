@@ -49,9 +49,13 @@ Context from video transcript:
         """
         prompt = self.get_qa_prompt()
 
+        def retrieve_and_format(question: str) -> str:
+            docs = retriever.invoke(question)
+            return self.format_docs(docs)
+
         chain = (
             {
-                "context": retriever | self.format_docs,
+                "context": retrieve_and_format,
                 "question": RunnablePassthrough()
             }
             | prompt
